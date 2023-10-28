@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href=" {{url_for('static', filename='css/admin.css')}} ">
+</head>
+<body>
+    <div class="nav1">
+    <div class="util">
+        <div class="content">
+           
+            <div class="im1">
+                <div class="col">
+                    <div class="ele">NOM:</div>
+                    {% if 'user_name' in session %}
+                    <div class="ele1">{{session ['user_name']}}</div>
+                    {% endif %}
+                    
+                </div><br>
+
+                <div class="col">
+                   <div class="ele">email:</div>
+                    {% if 'user_name' in session %}
+                    <div class="ele1">{{session ['user_email']}}</div>
+                    {% endif %}
+                    
+                </div><br>
+                <div class="col">
+                    <div class="ele">tel:</div>
+                    {% if 'user_name' in session %}
+                    <div class="ele1">{{session ['user_tel']}}</div>
+                    {% endif %}
+                    
+                </div>
+                <!-- <div class="elements">
+                    <div class="nomm">
+                        <div class="choix">DATE DE COMMADE</div>
+                        <div class="choix1">CATEGORIE</div>
+                        <div class="choix2">NB_LIVRE</div>
+                        <div class="choix3">PRIX</div>
+                    </div>
+                    <div class="nomm1">
+                        <div class="choix3">30/12/2023</div>
+                        <div class="choix2">HACKING</div>
+                        <div class="choix1">2</div>
+                        <div class="choix">100$</div>
+                    </div>
+                </div> -->
+            </div>
+
+          
+            
+        </div>
+    </div>
+</body>
+</html>
