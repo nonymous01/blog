@@ -29,10 +29,10 @@ with app.app_context():
     except Exception as e:
         print("erreur de la creation de la base de données")
 
-#Accueil Non connecter
-@app.route("/")
-def indexx():
-            return render_template('index.html')
+# #Accueil Non connecter
+# @app.route("/")
+# def indexx():
+#             return render_template('inscription.html')
 
 
 @app.route("/panier")
@@ -115,7 +115,7 @@ def login():
 
 
 #afficher la liste des utilisateurs
-@app.route('/data', methods = ["GET"])
+@app.route('/', methods = ["GET"])
 def data():
     listdata=img.query.all()
     return render_template('datalist.html',listdata=listdata)

@@ -20,7 +20,7 @@
                                 <li ><a href="./login" >DECONNEXION</a></li>
                                 <li ><a href="" >ACCUEIL</a></li>
                                 <li ><a href="./admin">PROFIL</a></li>
-                                <li><a href="./commande">COMMANDE</a></li>
+                                <li><a href="./data">myblog</a></li>
                                 <li><a href="#azer">CATEGORIE</a></li>
                             </ul>
                         </div>
@@ -28,10 +28,11 @@
                   
                     <ul class="dd">                     
                         <li><a href="#">ACCUEIL</a></li>
-                        <li><a href="{{url_for('data')}}">BLOG</a></li>
+                        <li><a href="#azer">BLOG</a></li>
                         <li><a href="#apropos">A PROPOS</a></li>
                         <li><a href="./admin">PROFIL</a></li>
-                        <li class="panierq"><strong></strong></li>
+                        <li><a href="./data">myblog</a></li>
+                        <li class="panierq"><strong>{{cpt}}</strong></li>
                     </ul>
                     <a href="{{url_for('show_panier')}}"><div id="recherche"><img src="" height="30px"  alt=""></div></a>
                 </div>
@@ -76,9 +77,8 @@
                     
 
                <div class="tect1" ><h3 class="HACKING"  id="hack">MY BLOG</h3></div>
-               {% for data in ajout %}
+                {% for data in ajout %}
                <div class="collect1">
-                     {% for data in ajout %}
                     <div class="block">
                         <div class="l1">
                             <form action="/panier_ajoute" method="post">
@@ -98,7 +98,7 @@
                                 </form>                           
                         </div>                     
                     </div> 
-                    {% endfor %}  
+                    {% endfor %}   
                 </div> 
 
 
@@ -124,47 +124,13 @@
                     </div> 
 
                   
-                    <div class="collect1">
-                    <div class="block">
-                        <div class="l1">
-                            <form action="" method="post">
-                                <div class="ll">                   
-                                    <button type="submit" style="height: 170px; width: 580px; border: none; margin-left: -220px;">
-                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestiae, sed. Quia sint eum cum. Error aspernatur iusto cumque, quam sequi impedit praesentium ea id nam fugit perferendis enim vero? Dolore!</p>
-                                        <input type="text" name="prix" id="" value="" style="width: 0px; height: 0px; display: none;">
-
-                                    </button >
-                                </div>                              
-                                    <div class="ll2">
-                                        <div class="doc"><p>yoiudfv</p></div>
-                                        <input type="text" name="name" id="" value="" style="width: 0px; height: 0px;display: none;">                                                        
-                                            
-                                        </div>
-                                    </div>
-                                </form>                           
-                        </div> 
-                    </div>                                       
-                </div>
-
-            </div>
-
-                
-            
-                
-
-
-                
-
-                
-
-
-
+                   
            
 
 
 
-                
               
+            </header>
 
 </body>
 </html>
