@@ -1,5 +1,7 @@
-from flask import Flask, redirect,request,render_template, url_for,flash,session
+from flask import Flask, redirect,request,render_template, url_for,flash,session,render_template_string
+from os  import environ
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
@@ -29,10 +31,10 @@ with app.app_context():
     except Exception as e:
         print("erreur de la creation de la base de données")
 
-# #Accueil Non connecter
-# @app.route("/")
-# def indexx():
-#             return render_template('inscription.html')
+#Accueil Non connecter
+@app.route("/")
+def indexx():
+            return render_template('index.html')
 
 
 @app.route("/panier")
@@ -74,7 +76,7 @@ def register():
             password =request.form['password']     
             if len(tel)>=10 and len(password)>=8 :
                 try:
-                    new_user=User(name,email,tel,password)
+                    new_user=User(name,email,password,tel)
                     db.session.add(new_user)
                     db.session.commit()
                     flash(f"Bienvenue!  {name}")
@@ -96,48 +98,36 @@ def login():
         password= request.form['password']
         #selection d'un utilisateur dans la class User
         user =User.query.filter_by(email=email, password=password).first()
-        if request.method=='POST':
-            if user:
-                #afficher le nom sur la page d'accueil
-                session['user_name']=user.name
-                session['user_email']=user.email
-                session['user_tel']=user.tel
-                return redirect("ajouter")
-            elif email =="youssef@gmail.com" and password == "youssef":
-                flash("bienvenue ANONYMOUS")
-                return redirect('/data')         
-            else:
-                flash('Identifiants incorrects')
-        else :
-            return render_template('connexion.html')
+        if user:
+            #afficher le nom sur la page d'accueil
+            session['user_name']=user.name
+            session['user_email']=user.email
+            session['user_tel']=user.tel
+            return redirect("ajouter")
+        elif email =="youssef@gmail.com" and password == "youssef":
+            flash("bienvenue ANONYMOUS")
+            return redirect('/data')         
+        else:
+            flash('Identifiants incorrects')
     return render_template('connexion.html')
 
 
 
 #afficher la liste des utilisateurs
-@app.route('/', methods = ["GET"])
+@app.route('/data', methods = ["GET"])
 def data():
-    listdata=img.query.all()
+    listdata=User.query.all()
     return render_template('datalist.html',listdata=listdata)
-
-
-# # supp les info de la db
-# @app.route('/users/<int:id>')
-# def delete_user(id):
-#     data= User.query.get(id)
-#     db.session.delete(data)
-#     db.session.commit()
-#     return redirect("/data")
-
 
 
 # supp les info de la db
 @app.route('/users/<int:id>')
 def delete_user(id):
-    data= img.query.get(id)
+    data= User.query.get(id)
     db.session.delete(data)
     db.session.commit()
     return redirect("/data")
+
 #ajouter un utilisateur
 @app.route("/add_user", methods=['POST','GET'])
 def add_user():
@@ -168,13 +158,12 @@ class img(db.Model):
      def __init__(self,name,prix):
         self.name=name
         self.prix=prix
-
 with app.app_context():
     try:
         db.create_all()
+        print("Tables créées avec succès.")
     except Exception as e:
-        print("erreur de la creation de la base de données")
-
+        print(f"Erreur lors de la création des tables : {e}")
 
 @app.route('/ajouter', methods =(["GET","POST"]))
 def ajouter():
@@ -198,7 +187,28 @@ def article():
         
 
 
-
+from bs4 import BeautifulSoup       
+#paiement 
+@app.route("/paiement", methods=["GET","POST"])
+def paiement():
+    if request.method =="POST":
+        name_carte = request.form.get('name_carte')
+        num_carte = request.form.get('num_carte')
+        Expiry = request.form.get('Expiry')
+        security = request.form.get('security')
+        html = '<div >$232</div>'
+        if len(num_carte)==14:
+            if len(security)==3:
+               soup = BeautifulSoup(html, 'html.parser')
+               valeur = soup.div.text.strip('$')
+               flash(f"Paiement effectué. Votre compte a été débité de {valeur}$")
+               return render_template('payement.html')
+            flash ("code de securité incorrect")
+            return render_template('payement.html')
+        flash ("numero de carte incorrect")
+        return render_template('payement.html')
+    return render_template('payement.html')
+    
 
 
 # modifier un utilisateur dans la db
@@ -241,27 +251,30 @@ class panier_user(db.Model):
      name=db.Column(db.Text, nullable=False)
      prix=db.Column(db.Text, nullable=False)
      email=db.Column(db.Text, nullable=False)
-
      def __init__(self,name,prix,email):
         self.name=name
         self.prix=prix
         self.email=email
-
-
 with app.app_context():
     try:
         db.create_all()
+        print("Tables créées avec succès.")
     except Exception as e:
-        print("erreur de la creation de la base de données")
+        print(f"Erreur lors de la création des tables : {e}")
+
 
 @app.route("/show_panier")
 def show_panier():
     datas=panier_user.query.all()
+    cpt =0
+    for _ in datas:
+        cpt=cpt+1
     return render_template('panier.html', datas = datas)
 
 
 @app.route("/accueil")
 def connect():
+    cpt = show_panier()  # Obtenez la valeur de `cpt`
     return render_template("accueil.html")
 
 @app.route('/paniers', methods =(["GET"]))
@@ -292,44 +305,12 @@ def panier_sup(id):
         db.session.commit()
     return redirect("/paniers") 
 
-
 @app.route('/logout')
 def logout():
-    # Efface les informations de session
-    session.pop('user_name', None)
-    session.pop('user_email', None)
-    session.pop('user_tel', None)
-    # response = make_response(render_template('page_protegee.html'))
-    # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    # return response
-    return redirect('login')
+    session.clear()  # Efface toutes les données de session
+    return redirect(url_for('indexx'))  # Redirige l'utilisateur vers la page d'accueil (ou une autre page appropriée)
 
-import smtplib
-from email.message import EmailMessage
-import smtplib
-from email.message import EmailMessage
 
-@app.route('/envoyer_email', methods=['POST'])
-def envoyer_email():
-    if request.method == 'POST':
-        nom = request.form['name']
-        email = request.form['email']
-        un_message = request.form['message']
-        msg = EmailMessage()
-        msg.set_content(un_message)
-        msg['Subject'] = f"Message de {nom}"
-        msg['From'] = 'votre_email@gmail.com'  # Remplacez par votre adresse e-mail Gmail
-        msg['To'] = '13159596youssef@gmail.com'  # Adresse e-mail de destination
-        try:
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login('votre_email@gmail.com', 'votre_mot_de_passe')  # Remplacez par votre mot de passe Gmail
-            server.send_message(msg)
-            server.quit()
-            flash('E-mail envoyé avec succès')
-        except Exception as e:
-            flash(f"Erreur lors de l'envoi de l'e-mail : {str(e)}") 
-        return redirect(url_for('ajouter'))
 
 
 if __name__=="__main__":

@@ -24,10 +24,10 @@
     justify-content: center;
     text-align: center;
     /* position: relative;  */
-    width: 35%;
+    width: 75%;
     margin: 0 auto;
-    height: 420px;
-    background-color: rgb(226, 179, 179);
+    height: 450px;
+    background-color: aqua;
     display: flex;
     box-shadow: 1px 1px 8px 1px rgb(72, 76, 83);
 
@@ -50,7 +50,7 @@ h2{
 }
 .moi2{
 
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-color: rgb(255, 255, 255);
     justify-content: center;
@@ -61,12 +61,12 @@ h2{
     height: 30px;
     position: relative;
     color: orangered;
-    top: -30px;
     font-size: 1.2rem;
 }
 .cont{
+    background-color: rgb(255, 255, 255);
     width: 100%;
-    height: 100%;
+    height: 80%;
     position: relative;
     top: 30px;
     justify-content: center;
@@ -97,7 +97,6 @@ input{
     color: white;
     font-size: 15px;
     position: relative;
-    top: -30px;
 }
 
 @media screen and (min-width:204px) and (max-width:786px) {

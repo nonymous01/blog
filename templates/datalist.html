@@ -12,20 +12,22 @@
     <thead>
         <th>id</th>
         <th>nom</th>
-        <th>MES POST</th>
+        <th>email</th>
+        <th>tel</th>
     </thead>
     {% for dataa in listdata %}
     <tbody>
         <td>{{dataa.id}}</td><br>
         <td>{{dataa.name}}</td> 
-        <td>{{dataa.prix}}</td> 
+        <td>{{dataa.email}}</td> 
+        <td>{{dataa.tel}}</td> 
         <td><a href="{{url_for('update',id=dataa.id)}}"><div class="azert">modifier</div></a></td>
         <td><a href="{{url_for('delete_user',id=dataa.id)}}"><div class="azert1">supprimer</div></a></td>
     </tbody>
     {% endfor %}
     <div class="cccccc">
       <div class="Ajouter"><a href="{{url_for('add_user')}}"><div class="azert11">ajouter un utilisateur</div></a></div class="Ajouter">
-      <div class="Ajouters"><a href="{{url_for('image')}}"><div class="azert111">ajouter des post</div></a></div class="Ajouter">
+      <div class="Ajouters"><a href="{{url_for('image')}}"><div class="azert111">ajouter un livre</div></a></div class="Ajouter">
       <div class="Ajou"><a href="/logout">Déconnexion</a></div>
 
     </div>
